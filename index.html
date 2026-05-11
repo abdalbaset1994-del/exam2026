@@ -922,188 +922,147 @@
 
 </div><!-- end main-wrapper -->
 
-<iframe name="gFrame" style="display:none;width:0;height:0;border:0;"></iframe>
-
-<form id="form_student" method="POST" target="gFrame" action="https://docs.google.com/forms/d/e/1FAIpQLSfUC5ZjheZdO83TghJVYxeDFKCKenqz7O7Cjz8pmANP1EIEqA/formResponse" style="display:none">
-  <input id="fi_s_school"   name="entry.509787406"  value="">
-  <input id="fi_s_year"     name="entry.2081560194" value="">
-  <input id="fi_s_subject"  name="entry.588038020"  value="">
-  <input id="fi_s_comfort"  name="entry.931905559"  value="">
-  <input id="fi_s_paper"    name="entry.884425181"  value="">
-  <input id="fi_s_time"     name="entry.2053134247" value="">
-  <input id="fi_s_notes"    name="entry.1796620497" value="">
-</form>
-
-<form id="form_staff" method="POST" target="gFrame" action="https://docs.google.com/forms/d/e/1FAIpQLSeHYeDz5LEcA37VqqgtVFN8P4WQlKJIUr4h08a9xImyCE2EfQ/formResponse" style="display:none">
-  <input id="fi_st_name"         name="entry.1659644854" value="">
-  <input id="fi_st_nid"          name="entry.184776670"  value="">
-  <input id="fi_st_school"       name="entry.779612982"  value="">
-  <input id="fi_st_role"         name="entry.2024291212" value="">
-  <input id="fi_st_distribution" name="entry.1456600222" value="">
-  <input id="fi_st_violations"   name="entry.377862350"  value="">
-  <input id="fi_st_vdetails"     name="entry.1510103578" value="">
-  <input id="fi_st_independence" name="entry.973237769"  value="">
-  <input id="fi_st_secret"       name="entry.2037801591" value="">
-</form>
-
-<form id="form_parent" method="POST" target="gFrame" action="https://docs.google.com/forms/d/e/1FAIpQLSekM4YdsIpynf3h4a5NXCzdKMwLe8ZfMsQAVFT7_U4Jkoqnrw/formResponse" style="display:none">
-  <input id="fi_p_haschild"      name="entry.704706222"  value="">
-  <input id="fi_p_school"        name="entry.1355983305" value="">
-  <input id="fi_p_mood"          name="entry.973067807"  value="">
-  <input id="fi_p_academic"      name="entry.1800006622" value="">
-  <input id="fi_p_security"      name="entry.2017552195" value="">
-  <input id="fi_p_crowd"         name="entry.64463914"   value="">
-  <input id="fi_p_communication" name="entry.1830049350" value="">
-  <input id="fi_p_complaints"    name="entry.1739004159" value="">
-</form>
-
 <script>
 var ratings      = {};
 var selectedRole = null;
 var currentForm  = null;
 
+var URLS = {
+  student: "https://docs.google.com/forms/d/e/1FAIpQLSfUC5ZjheZdO83TghJVYxeDFKCKenqz7O7Cjz8pmANP1EIEqA/formResponse",
+  staff:   "https://docs.google.com/forms/d/e/1FAIpQLSeHYeDz5LEcA37VqqgtVFN8P4WQlKJIUr4h08a9xImyCE2EfQ/formResponse",
+  parent:  "https://docs.google.com/forms/d/e/1FAIpQLSekM4YdsIpynf3h4a5NXCzdKMwLe8ZfMsQAVFT7_U4Jkoqnrw/formResponse"
+};
+
 function showForm(type) {
-  currentForm  = type;
-  ratings      = {};
-  selectedRole = null;
+  currentForm = type; ratings = {}; selectedRole = null;
   document.getElementById('welcomeScreen').style.display = 'none';
   document.querySelectorAll('.form-section').forEach(function(f) { f.classList.remove('active'); });
-  var map = { student:'studentForm', staff:'staffForm', parent:'parentForm' };
-  document.getElementById(map[type]).classList.add('active');
-  window.scrollTo({ top:0, behavior:'smooth' });
+  document.getElementById({student:'studentForm',staff:'staffForm',parent:'parentForm'}[type]).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function goBack() {
-  currentForm  = null; ratings = {}; selectedRole = null;
-  document.querySelectorAll('.form-section').forEach(function(f) { f.classList.remove('active'); });
-  document.getElementById('welcomeScreen').style.display = 'block';
+  currentForm=null; ratings={}; selectedRole=null;
+  document.querySelectorAll('.form-section').forEach(function(f){f.classList.remove('active');});
+  document.getElementById('welcomeScreen').style.display='block';
   document.getElementById('successScreen').classList.remove('show');
   document.getElementById('observerQ').classList.remove('show');
   document.getElementById('supervisorQ').classList.remove('show');
-  document.querySelectorAll('.role-btn').forEach(function(b) { b.classList.remove('selected'); });
-  window.scrollTo({ top:0, behavior:'smooth' });
+  document.querySelectorAll('.role-btn').forEach(function(b){b.classList.remove('selected');});
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function resetAll() {
   document.getElementById('successScreen').classList.remove('show');
-  document.getElementById('welcomeScreen').style.display = 'block';
-  document.querySelectorAll('input[type=text], textarea').forEach(function(el) { el.value=''; });
-  document.querySelectorAll('select').forEach(function(el) { el.selectedIndex=0; });
-  document.querySelectorAll('.rating-btn').forEach(function(b) { b.classList.remove('selected'); });
+  document.getElementById('welcomeScreen').style.display='block';
+  document.querySelectorAll('input[type=text],textarea').forEach(function(el){el.value='';});
+  document.querySelectorAll('select').forEach(function(el){el.selectedIndex=0;});
+  document.querySelectorAll('.rating-btn').forEach(function(b){b.classList.remove('selected');});
   ratings={}; selectedRole=null;
-  window.scrollTo({ top:0, behavior:'smooth' });
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// Update hidden input immediately when value changes
-function setHidden(id, val) {
-  var el = document.getElementById(id);
-  if (el) el.value = val || '';
-}
-
-// Rating selection - updates hidden input immediately
 function selectRating(groupId, btn, value) {
   var group = document.getElementById(groupId);
-  if (!group) return;
-  group.querySelectorAll('.rating-btn').forEach(function(b) { b.classList.remove('selected'); });
+  if(!group) return;
+  group.querySelectorAll('.rating-btn').forEach(function(b){b.classList.remove('selected');});
   btn.classList.add('selected');
   ratings[groupId] = value;
-  // Update hidden inputs immediately
-  var map = {
-    's_comfort':      'fi_s_comfort',
-    's_paper':        'fi_s_paper',
-    's_time':         'fi_s_time',
-    'st_distribution':'fi_st_distribution',
-    'st_violations':  'fi_st_violations',
-    'st_independence':'fi_st_independence',
-    'p_hasChild':     'fi_p_haschild',
-    'p_mood':         'fi_p_mood',
-    'p_academic':     'fi_p_academic',
-    'p_security':     'fi_p_security',
-    'p_crowd':        'fi_p_crowd',
-    'p_communication':'fi_p_communication'
-  };
-  if (map[groupId]) setHidden(map[groupId], value);
 }
 
 function selectRole(btn, role, value) {
-  document.querySelectorAll('.role-btn').forEach(function(b) { b.classList.remove('selected'); });
+  document.querySelectorAll('.role-btn').forEach(function(b){b.classList.remove('selected');});
   btn.classList.add('selected');
   selectedRole = role;
   ratings['roleValue'] = value || btn.textContent.trim();
-  setHidden('fi_st_role', ratings['roleValue']);
   document.getElementById('observerQ').classList.remove('show');
   document.getElementById('supervisorQ').classList.remove('show');
-  if (role === 'observer')   document.getElementById('observerQ').classList.add('show');
-  if (role === 'supervisor') document.getElementById('supervisorQ').classList.add('show');
+  if(role==='observer')   document.getElementById('observerQ').classList.add('show');
+  if(role==='supervisor') document.getElementById('supervisorQ').classList.add('show');
 }
 
 function toggleParentDetails(show) {
-  document.getElementById('p_schoolRow').style.display       = show ? 'block' : 'none';
-  document.getElementById('parentDetailsCard').style.display = show ? 'block' : 'none';
+  document.getElementById('p_schoolRow').style.display       = show?'block':'none';
+  document.getElementById('parentDetailsCard').style.display = show?'block':'none';
 }
 
-function maskNID(nid) {
-  return nid.substring(0,3) + '****' + nid.substring(nid.length-3);
-}
-
-function showValidationAlert(fields) {
-  alert('يرجى إكمال الحقول المطلوبة:\n• ' + fields.join('\n• '));
-}
-
-function showLoading(show) {
-  document.getElementById('loadingOverlay').classList.toggle('show', show);
-}
-
+function maskNID(nid) { return nid.substring(0,3)+'****'+nid.substring(nid.length-3); }
+function showValidationAlert(f) { alert('يرجى إكمال:\n• '+f.join('\n• ')); }
+function showLoading(s) { document.getElementById('loadingOverlay').classList.toggle('show',s); }
 function showSuccess() {
-  document.querySelectorAll('.form-section').forEach(function(f) { f.classList.remove('active'); });
+  document.querySelectorAll('.form-section').forEach(function(f){f.classList.remove('active');});
   document.getElementById('successScreen').classList.add('show');
-  window.scrollTo({ top:0, behavior:'smooth' });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function doFetch(url, data) {
+  var body = Object.keys(data).map(function(k){
+    return encodeURIComponent(k)+'='+encodeURIComponent(data[k]);
+  }).join('&');
+  showLoading(true);
+  fetch(url, {
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body: body
+  }).then(function(){
+    showLoading(false); showSuccess();
+  }).catch(function(){
+    showLoading(false); showSuccess();
+  });
 }
 
 function submitForm(type) {
-
-  if (type === 'student') {
-    var sc = document.getElementById('s_school').value.trim();
-    var yr = document.getElementById('s_year').value;
-    var sb = document.getElementById('s_subject').value.trim();
-    if (!sc) { showValidationAlert(['اسم المدرسة']); return; }
-    if (!yr) { showValidationAlert(['السنة الدراسية']); return; }
-    if (!sb) { showValidationAlert(['المادة الممتحنة']); return; }
-    setHidden('fi_s_school',  sc);
-    setHidden('fi_s_year',    yr);
-    setHidden('fi_s_subject', sb);
-    setHidden('fi_s_notes',   document.getElementById('s_notes').value);
-    showLoading(true);
-    document.getElementById('form_student').submit();
+  if(type==='student') {
+    var sc=document.getElementById('s_school').value.trim();
+    var yr=document.getElementById('s_year').value;
+    var sb=document.getElementById('s_subject').value.trim();
+    if(!sc){showValidationAlert(['اسم المدرسة']);return;}
+    if(!yr){showValidationAlert(['السنة الدراسية']);return;}
+    if(!sb){showValidationAlert(['المادة الممتحنة']);return;}
+    doFetch(URLS.student, {
+      'entry.509787406': sc,
+      'entry.2081560194': yr,
+      'entry.588038020': sb,
+      'entry.931905559': ratings['s_comfort']||'',
+      'entry.884425181': ratings['s_paper']||'',
+      'entry.2053134247': ratings['s_time']||'',
+      'entry.1796620497': document.getElementById('s_notes').value
+    });
   }
-
-  else if (type === 'staff') {
-    var nm = document.getElementById('st_name').value.trim();
-    var nd = document.getElementById('st_nid').value.trim();
-    var sc = document.getElementById('st_school').value.trim();
-    if (!nm) { showValidationAlert(['الاسم الكامل']); return; }
-    if (!nd) { showValidationAlert(['الرقم الوطني']); return; }
-    if (!sc) { showValidationAlert(['اسم المدرسة']); return; }
-    if (!selectedRole) { showValidationAlert(['الدور الوظيفي']); return; }
-    setHidden('fi_st_name',    nm);
-    setHidden('fi_st_nid',     maskNID(nd));
-    setHidden('fi_st_school',  sc);
-    setHidden('fi_st_vdetails',document.getElementById('st_violation_details').value);
-    setHidden('fi_st_secret',  document.getElementById('st_secret').value);
-    showLoading(true);
-    document.getElementById('form_staff').submit();
+  else if(type==='staff') {
+    var nm=document.getElementById('st_name').value.trim();
+    var nd=document.getElementById('st_nid').value.trim();
+    var sc=document.getElementById('st_school').value.trim();
+    if(!nm){showValidationAlert(['الاسم الكامل']);return;}
+    if(!nd){showValidationAlert(['الرقم الوطني']);return;}
+    if(!sc){showValidationAlert(['اسم المدرسة']);return;}
+    if(!selectedRole){showValidationAlert(['الدور الوظيفي']);return;}
+    doFetch(URLS.staff, {
+      'entry.1659644854': nm,
+      'entry.184776670':  maskNID(nd),
+      'entry.779612982':  sc,
+      'entry.2024291212': ratings['roleValue']||'',
+      'entry.1456600222': ratings['st_distribution']||'',
+      'entry.377862350':  ratings['st_violations']||'',
+      'entry.1510103578': document.getElementById('st_violation_details').value,
+      'entry.973237769':  ratings['st_independence']||'',
+      'entry.2037801591': document.getElementById('st_secret').value
+    });
   }
-
-  else if (type === 'parent') {
-    var hc = ratings['p_hasChild'];
-    if (!hc) { showValidationAlert(['هل لديك أبناء امتحنوا اليوم؟']); return; }
-    setHidden('fi_p_school',      document.getElementById('p_school').value);
-    setHidden('fi_p_complaints',  document.getElementById('p_complaints').value);
-    showLoading(true);
-    document.getElementById('form_parent').submit();
+  else if(type==='parent') {
+    var hc=ratings['p_hasChild'];
+    if(!hc){showValidationAlert(['هل لديك أبناء امتحنوا اليوم؟']);return;}
+    doFetch(URLS.parent, {
+      'entry.704706222':  hc,
+      'entry.1355983305': document.getElementById('p_school').value||'',
+      'entry.973067807':  ratings['p_mood']||'',
+      'entry.1800006622': ratings['p_academic']||'',
+      'entry.2017552195': ratings['p_security']||'',
+      'entry.64463914':   ratings['p_crowd']||'',
+      'entry.1830049350': ratings['p_communication']||'',
+      'entry.1739004159': document.getElementById('p_complaints').value||''
+    });
   }
-
-  setTimeout(function() { showLoading(false); showSuccess(); }, 2000);
 }
 </script>
 </body>
